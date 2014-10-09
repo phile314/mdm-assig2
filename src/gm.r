@@ -19,7 +19,26 @@ gm.restart <- function(nstart, prob, seed, obs, forward, backward, score) {
   return(list(call = match.call(), best = best))
 }
 
-gm.search <- function() {
+# gm.search(counts, graph.init, forward, backward, score)
+# Learns an undirected graphical model from data.
+#
+# Arguments
+#   counts : A contingency table representing the observed counts
+#   grap.init : The adjacency matrix that represents the initial graph, from which the search starts
+#   forward : A logical value that indicates whether adding edges during the search is allowed
+#   backward : A logical value that indicates whether removing edges during the search is allowed
+#   score : A string, either "aic" or "bic", that determines which score function is used
+#
+# Result
+# A list containing the following named components:
+#   model : A list containing the cliques of the final model. Each clique is a
+#           vector containing the column numbers of the variables in the clique.
+#   score : The AIC or BIC score of the final model.
+#   trace : A data frame providing a trace of the search process. Row i of the data
+#           frame provides relevant information on step i of the search.
+#   call  : The call to the function gm.search that produced this result.
+#
+gm.search <- function(counts, graph.init, forward, backward, score) {
 
 }
 
