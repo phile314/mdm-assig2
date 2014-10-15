@@ -1,3 +1,4 @@
+source("cliques.r")
 
 gm.restart <- function(nstart, prob, seed, counts, forward, backward, score) {
   set.seed(seed)
@@ -40,6 +41,35 @@ gm.restart <- function(nstart, prob, seed, counts, forward, backward, score) {
 #
 gm.search <- function(counts, graph.init, forward, backward, score) {
 
+
+}
+
+# graph.neighbors(graph)
+# Computes the neighbors graphs of the given undirected graph
+#
+# Arguments
+#   graph : An binary symmetric matrix representing the adjacency matrix of the graph
+#
+# Result
+# A list containing two named fields
+#   added : A list containing the graphs obtained by the given graph adding an edge
+#   removed : A list containing the graphs obtained by the given graph removing an edge
+graph.neighbors <- function(graph){
+  n <- nrow(graph)
+  added <- list()
+  removed <- list()
+  for(i in seq_len(n))
+    for(j in seq_len(i - 1))
+      if (graph[i, j]){
+        r <- graph
+        r[i, j] <- r[j, i] <- 0
+        removed <- c(removed, list(r))
+      } else {
+        a <- graph
+        a[i, j] <- a[j, i] <- 1
+        added <- c(added, list(a))
+      }
+  return(list(added = added, removed = removed))
 }
 
 gm.randGraph <- function(prob, nNodes) {
