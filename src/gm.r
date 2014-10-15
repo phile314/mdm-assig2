@@ -67,7 +67,7 @@ gm.search <- function(counts, graph.init, forward, backward, score) {
     # Tracing
     delta <- model$graph - graph
     action <- if (sum(delta) > 0) "add" else "remove"
-    edge <- which(delta != 0, arr.ind = T)[1, ]
+    edge <- which(delta != 0, arr.ind = T)[2, ]
     trace[i, ] <- c(action, edge, model$score)
     i = i + 1
 
@@ -151,6 +151,14 @@ graph.neighbors <- function(graph){
         added <- c(added, list(a))
       }
   return(list(added = added, removed = removed))
+}
+
+# Prints the trace of a search execition
+output.trace <- function(trace){
+  fmt <- function(row)
+    paste(row$action, "\t:", row$v1 , "-", row$v2, "score =", row$score)
+  formatted <- by(trace, seq_len(nrow(trace)), fmt)
+  cat(formatted, sep = "\n")
 }
 
 # gm.randGraph(prob, nNodes)
