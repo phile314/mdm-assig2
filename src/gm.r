@@ -143,6 +143,16 @@ graph.neighbors <- function(graph){
   return(list(added = added, removed = removed))
 }
 
+# gm.randGraph(prob, nNodes)
+# Generates a random graph represented as adjacency matrix.
+# No edges from a vertex back to itself are created.
+#
+# Arguments
+#   prob   : Probablity that a edge is created.
+#   nNodes : The number of nodes in the graph.
+#
+# Result
+# The adjacency matrix.
 gm.randGraph <- function(prob, nNodes) {
   m <- matrix(0,nNodes,nNodes)
   # TODO update graph
@@ -150,13 +160,13 @@ gm.randGraph <- function(prob, nNodes) {
   # (probably because it would mean that a node is independent
   #  from itself, which doesn't sound sensible)
   for (i in (1:nNodes)) {
-    s <- sample((0:1), (i - 1), c(prob - 1, prob))
-    # fill upper half, set everything else to zero
-    m[i,] <- c(s, rep(0, nNodes - i + 1))
-  }
-  # copy values from upper half to lower half
-  for (i in (1:nNodes)) {
-    #m[i,] <- c(m[i,(1:i)], m
+    s <- sample((0:1), (i - 1), prob = c(1 - prob, prob), replace = TRUE)
+    # fill lower half, set everything else to zero
+    m[i,] <- c(s,rep(0, nNodes - i + 1))
+    # fill upper half
+    if (i > 1) {
+      m[(1:(i-1)),i] <- s
+    }
   }
 
   return(m)
