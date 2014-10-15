@@ -42,9 +42,10 @@ gm.restart <- function(nstart, prob, seed, counts, forward, backward, score) {
 gm.search <- function(counts, graph.init, forward, backward, score) {
   stopifnot(forward || backward) # TODO is it allowed to call this function with both forward and backward set to FALSE?
   this.call <- call("gm.search", counts, graph.init, forward, backward, score)
-  trace <- data.frame()
+  trace <- data.frame(action = NA, v1 = NA, v2 = NA, score = NA)
+  i <- 1
   score.f <- switch(score, aic = aic, bic = bic)
-  score <- 0
+  score <- .Machine$integer.max
   graph <- graph.init
   trainAndScore <- function(counts) {
     function(g){
@@ -62,6 +63,15 @@ gm.search <- function(counts, graph.init, forward, backward, score) {
     neighbors <- c(added, removed)
     fitted.models <- lapply(neighbors, trainAndScore(counts))
     model <- best.model(fitted.models)
+
+    # Tracing
+    delta <- model$graph - graph
+    action <- if (sum(delta) > 0) "add" else "remove"
+    edge <- which(delta != 0, arr.ind = T)[1, ]
+    trace[i, ] <- c(action, edge, model$score)
+    i = i + 1
+
+    # Update
     counts <- model$fitted$fit
     graph <- model$graph
 
