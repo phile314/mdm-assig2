@@ -85,7 +85,7 @@ gm.search <- function(counts, graph.init, forward, backward, score) {
   return(list(cliques = model$cliques,  # TODO should the name be model or cliques?
               score = model$score,
               trace = trace,
-              call  = this.call))
+              call  = match.call))
 }
 
 # Function best.model(models)
