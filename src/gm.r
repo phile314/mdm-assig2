@@ -40,9 +40,80 @@ gm.restart <- function(nstart, prob, seed, counts, forward, backward, score) {
 #   call  : The call to the function gm.search that produced this result.
 #
 gm.search <- function(counts, graph.init, forward, backward, score) {
+  stopifnot(forward || backward) # TODO is it allowed to call this function with both forward and backward set to FALSE?
+  this.call <- call("gm.search", counts, graph.init, forward, backward, score)
+  trace <- data.frame()
+  score.f <- switch(score, aic = aic, bic = bic)
+  score <- 0
+  graph <- graph.init
+  trainAndScore <- function(counts) {
+    function(g){
+      cliques <- find.cliques(c(), seq(nrow(g)), c(), g, c())
+      model <- loglin(counts, cliques, fit = T)
+      score <- score.f(model)
+      return(list(fitted = model, score = score, cliques = cliques, graph = g))
+    }
+  }
 
+  repeat{
+    all.neighbors <- graph.neighbors(graph)
+    added <- if (forward) all.neighbors$added else list()
+    removed <- if (backward) all.neighbors$removed else list()
+    neighbors <- c(added, removed)
+    fitted.models <- lapply(neighbors, trainAndScore(counts))
+    model <- best.model(fitted.models)
+    counts <- model$fitted$fit
+    graph <- model$graph
 
+    if(model$score >= score) # if the score doesn't improve : local optimum
+      break
+    else
+      score <- model$score
+  }
+
+  return(list(cliques = model$cliques,  # TODO should the name be model or cliques?
+              score = model$score,
+              trace = trace,
+              call  = this.call))
 }
+
+# Function best.model(models)
+# Returns the model with the lowest score from the given list
+#
+# Arguments
+#   models : A non-empty list of models containing the numerical field score
+#
+# Result
+#   The best model
+best.model <- function(models){
+  stopifnot(length(models) != 0)
+  best <- models[[1]]
+  for(model in models){
+    if (model$score <= best$score)
+      best <- model
+  }
+  return(best)
+}
+
+# Function: aic(M)
+# Computes the AIC score for a fitted log-linear model
+#
+# Arguments
+#   M : A log-linear model fitted using loglin with the fit parameter set to TRUE
+#
+# Result
+# A number that represents the AIC score
+aic <- function(M) M$lrt + 2 * (length(M$fit) - M$df)
+
+# Function: bic(M)
+# Computes the BIC score for a fitted log-linear model
+#
+# Arguments
+#   M : A log-linear model fitted using loglin with the fit parameter set to TRUE
+#
+# Result
+# A number that represents the BIC score
+bic <- function(M) M$lrt + log(sum(length(M$fit))) * (length(M$fit) - M$df)
 
 # graph.neighbors(graph)
 # Computes the neighbors graphs of the given undirected graph
