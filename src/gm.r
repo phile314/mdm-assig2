@@ -1,10 +1,10 @@
 
-gm.restart <- function(nstart, prob, seed, obs, forward, backward, score) {
+gm.restart <- function(nstart, prob, seed, counts, forward, backward, score) {
   set.seed(seed)
   best <- NULL
   for (i in (1:nstart)) {
     # generate random graph
-    gr <- gm.randGraph(prob, length(dim(obs)))
+    gr <- gm.randGraph(prob, length(dim(counts)))
 
     res <- gm.search(obs, gr, forward, backward, score)
 
