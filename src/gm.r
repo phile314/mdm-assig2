@@ -51,10 +51,11 @@ gm.randGraph <- function(prob, nNodes) {
   for (i in (1:nNodes)) {
     s <- sample((0:1), (i - 1), c(prob - 1, prob))
     # fill upper half, set everything else to zero
-    m[i,] <- c(s, rep(0, nNodes - i + 1)
+    m[i,] <- c(s, rep(0, nNodes - i + 1))
   }
+  # copy values from upper half to lower half
   for (i in (1:nNodes)) {
-    m[i,] <- c(m[i,(1:i)], m
+    #m[i,] <- c(m[i,(1:i)], m
   }
 
   return(m)
