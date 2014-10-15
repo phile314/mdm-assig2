@@ -1,5 +1,18 @@
 source("cliques.r")
 
+# gm.restart(nstart, prob, seed, counts, forward, backward, score)
+# Learns an undirected graphical model starting from multiple random graphs.
+#
+# Arguments
+#   nstart  : The number of restarts.
+#   prob    : Probablity that an edge is created.
+#   seed    : The seed for the random generator.
+#   ...     : See documentation of gm.search
+#
+# Result
+# A list containing the following named components:
+#   best  : The best found model.
+#   call  : The call to the function gm.restart that produced this result.
 gm.restart <- function(nstart, prob, seed, counts, forward, backward, score) {
   set.seed(seed)
   best <- NULL
@@ -7,15 +20,13 @@ gm.restart <- function(nstart, prob, seed, counts, forward, backward, score) {
     # generate random graph
     gr <- gm.randGraph(prob, length(dim(counts)))
 
-    res <- gm.search(obs, gr, forward, backward, score)
+    res <- gm.search(counts, gr, forward, backward, score)
 
     # is smaller score better?
-    if(best == NULL || best$score > res$score) {
+    if(is.null(best) || best$score > res$score) {
       best <- res
     }
   }
-
-  # how do we return the "call" (requested by Ad)?
 
   return(list(call = match.call(), best = best))
 }
@@ -41,7 +52,6 @@ gm.restart <- function(nstart, prob, seed, counts, forward, backward, score) {
 #
 gm.search <- function(counts, graph.init, forward, backward, score) {
   stopifnot(forward || backward) # TODO is it allowed to call this function with both forward and backward set to FALSE?
-  this.call <- call("gm.search", counts, graph.init, forward, backward, score)
   trace <- data.frame(action = NA, v1 = NA, v2 = NA, score = NA)
   i <- 1
   score.f <- switch(score, aic = aic, bic = bic)
@@ -84,7 +94,7 @@ gm.search <- function(counts, graph.init, forward, backward, score) {
   return(list(cliques = model$cliques,  # TODO should the name be model or cliques?
               score = model$score,
               trace = trace,
-              call  = this.call))
+              call  = match.call))
 }
 
 # Function best.model(models)
@@ -166,7 +176,7 @@ output.trace <- function(trace){
 # No edges from a vertex back to itself are created.
 #
 # Arguments
-#   prob   : Probablity that a edge is created.
+#   prob   : Probablity that an edge is created.
 #   nNodes : The number of nodes in the graph.
 #
 # Result
