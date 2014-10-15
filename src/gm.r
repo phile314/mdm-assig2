@@ -1,5 +1,18 @@
 source("cliques.r")
 
+# gm.restart(nstart, prob, seed, counts, forward, backward, score)
+# Learns an undirected graphical model starting from multiple random graphs.
+#
+# Arguments
+#   nstart  : The number of restarts.
+#   prob    : Probablity that an edge is created.
+#   seed    : The seed for the random generator.
+#   ...     : See documentation of gm.search
+#
+# Result
+# A list containing the following named components:
+#   best  : The best found model.
+#   call  : The call to the function gm.restart that produced this result.
 gm.restart <- function(nstart, prob, seed, counts, forward, backward, score) {
   set.seed(seed)
   best <- NULL
@@ -7,15 +20,13 @@ gm.restart <- function(nstart, prob, seed, counts, forward, backward, score) {
     # generate random graph
     gr <- gm.randGraph(prob, length(dim(counts)))
 
-    res <- gm.search(obs, gr, forward, backward, score)
+    res <- gm.search(counts, gr, forward, backward, score)
 
     # is smaller score better?
-    if(best == NULL || best$score > res$score) {
+    if(is.null(best) || best$score > res$score) {
       best <- res
     }
   }
-
-  # how do we return the "call" (requested by Ad)?
 
   return(list(call = match.call(), best = best))
 }
@@ -148,7 +159,7 @@ graph.neighbors <- function(graph){
 # No edges from a vertex back to itself are created.
 #
 # Arguments
-#   prob   : Probablity that a edge is created.
+#   prob   : Probablity that an edge is created.
 #   nNodes : The number of nodes in the graph.
 #
 # Result
