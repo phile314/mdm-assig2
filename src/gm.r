@@ -55,40 +55,36 @@ gm.search <- function(counts, graph.init, forward, backward, score) {
   trace <- data.frame(action = NA, v1 = NA, v2 = NA, score = NA)
   i <- 1
   score.f <- switch(score, aic = aic, bic = bic)
-  score <- .Machine$integer.max
-  graph <- graph.init
+  model <- list(score = .Machine$integer.max, graph = graph.init) # The best model obtained so far
   trainAndScore <- function(counts) {
     function(g){
       cliques <- find.cliques(c(), seq(nrow(g)), c(), g, c())
-      model <- loglin(counts, cliques, fit = T)
+      model <- loglin(counts, cliques, fit = T, print = F)
       score <- score.f(model)
       return(list(fitted = model, score = score, cliques = cliques, graph = g))
     }
   }
 
   repeat{
-    all.neighbors <- graph.neighbors(graph)
+    all.neighbors <- graph.neighbors(model$graph)
     added <- if (forward) all.neighbors$added else list()
     removed <- if (backward) all.neighbors$removed else list()
     neighbors <- c(added, removed)
     fitted.models <- lapply(neighbors, trainAndScore(counts))
-    model <- best.model(fitted.models)
+    current.model <- best.model(fitted.models)
+
+    if(current.model$score >= model$score) # local optimum
+      break
 
     # Tracing
-    delta <- model$graph - graph
+    delta <- current.model$graph - model$graph
     action <- if (sum(delta) > 0) "add" else "remove"
     edge <- which(delta != 0, arr.ind = T)[2, ]
-    trace[i, ] <- c(action, edge, model$score)
+    trace[i, ] <- c(action, edge, current.model$score)
     i = i + 1
 
     # Update
-    counts <- model$fitted$fit
-    graph <- model$graph
-
-    if(model$score >= score) # if the score doesn't improve : local optimum
-      break
-    else
-      score <- model$score
+    model <- current.model
   }
 
   return(list(cliques = model$cliques,  # TODO should the name be model or cliques?
