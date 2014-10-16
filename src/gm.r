@@ -51,17 +51,17 @@ gm.restart <- function(nstart, prob, seed, counts, forward, backward, score) {
 #   call  : The call to the function gm.search that produced this result.
 #
 gm.search <- function(counts, graph.init, forward, backward, score) {
-  stopifnot(forward || backward) # TODO is it allowed to call this function with both forward and backward set to FALSE?
-  trace <- data.frame(action = NA, v1 = NA, v2 = NA, score = NA)
-  i <- 1
+  # TODO is it allowed to call this function with both forward and backward set to FALSE?
   score.f <- switch(score, aic = aic, bic = bic)
-  model <- list(score = .Machine$integer.max, graph = graph.init) # The best model obtained so far
   trainAndScore <- function(g){
       cliques <- find.cliques(c(), seq(nrow(g)), c(), g, c())
       M <- loglin(counts, cliques, fit = T, print = F)
       score <- score.f(M)
       return(list(score = score, cliques = cliques, graph = g))
   }
+  model <- trainAndScore(graph.init)
+  trace <- data.frame(action = "none", v1 = NA, v2 = NA, score = model$score, stringsAsFactors=F)
+  i <- 1
 
   repeat{
     all.neighbors <- graph.neighbors(model$graph)
@@ -71,7 +71,7 @@ gm.search <- function(counts, graph.init, forward, backward, score) {
     fitted.models <- lapply(neighbors, trainAndScore)
     current.model <- best.model(fitted.models)
 
-    if(current.model$score >= model$score) # local optimum
+    if(is.null(current.model) || current.model$score >= model$score) # local optimum
       break
 
     # Tracing
@@ -100,7 +100,9 @@ gm.search <- function(counts, graph.init, forward, backward, score) {
 # Result
 #   The best model
 best.model <- function(models){
-  stopifnot(length(models) != 0)
+  if(length(models) == 0)
+    return(NULL)
+
   best <- models[[1]]
   for(model in models){
     if (model$score <= best$score)
