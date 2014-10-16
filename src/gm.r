@@ -133,7 +133,7 @@ aic <- function(M) M$lrt + 2 * (length(M$fit) - M$df)
 #
 # Result
 # A number that represents the BIC score
-bic <- function(M) M$lrt + log(sum(length(M$fit))) * (length(M$fit) - M$df)
+bic <- function(M) M$lrt + log(sum(M$fit)) * (length(M$fit) - M$df)
 
 # graph.neighbors(graph)
 # Computes the neighbors graphs of the given undirected graph
