@@ -49,6 +49,31 @@ The goal of this assignment is to implement and evaluate a tree classification a
 In addition to that, we will also discuss two different implementation styles
 and their performance implications.
 
+\section{Analysis}
+
+A: [PH]
+n = 10
+k = 2
+n over k = ...
+
+B: [PH]
+cells = length(table(...))
+num_params_sat = cells - 1 (VERIFY)
+
+C: [MV]
+gm.search(table(dat), matrix(0, 10, 10), forward=TRUE, backward=TRUE, score="bic")
+
+D: ([MV])
+what is pairwise?
+
+E: [MV]
+
+F: [PH]
+
+G: ([PH])
+
+H: [PH]
+
 \begin{thebibliography}{1}
 
 \bibitem{SPAM}

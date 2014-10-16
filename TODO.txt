@@ -1,4 +1,3 @@
 until Thursday
 
-MV  gm.search
-PH  gm.restart
+see doc.Rnw
