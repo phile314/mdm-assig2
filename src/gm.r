@@ -52,6 +52,7 @@ gm.restart <- function(nstart, prob, seed, counts, forward, backward, score) {
 #
 gm.search <- function(counts, graph.init, forward, backward, score) {
   # TODO is it allowed to call this function with both forward and backward set to FALSE?
+  # Initialization
   score.f <- switch(score, aic = aic, bic = bic)
   trainAndScore <- function(g){
       cliques <- find.cliques(c(), seq(nrow(g)), c(), g, c())
@@ -95,19 +96,18 @@ gm.search <- function(counts, graph.init, forward, backward, score) {
 # Returns the model with the lowest score from the given list
 #
 # Arguments
-#   models : A non-empty list of models containing the numerical field score
+#   models : A of models containing the numerical field score
 #
 # Result
-#   The best model
+#   The best model, or NULL if the list of models is empty
 best.model <- function(models){
   if(length(models) == 0)
     return(NULL)
 
   best <- models[[1]]
-  for(model in models){
+  for(model in models)
     if (model$score <= best$score)
       best <- model
-  }
   return(best)
 }
 
@@ -162,7 +162,7 @@ graph.neighbors <- function(graph){
 # Prints the trace of a search execition
 output.trace <- function(trace){
   fmt <- function(row)
-    paste(row$action, "\t:", row$v1 , "-", row$v2, "score =", row$score)
+    paste(row$action, paste(row$v1 , "-", row$v2), "score =", row$score, sep = "\t")
   formatted <- by(trace, seq_len(nrow(trace)), fmt)
   cat(formatted, sep = "\n")
 }
