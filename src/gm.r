@@ -56,13 +56,11 @@ gm.search <- function(counts, graph.init, forward, backward, score) {
   i <- 1
   score.f <- switch(score, aic = aic, bic = bic)
   model <- list(score = .Machine$integer.max, graph = graph.init) # The best model obtained so far
-  trainAndScore <- function(counts) {
-    function(g){
+  trainAndScore <- function(g){
       cliques <- find.cliques(c(), seq(nrow(g)), c(), g, c())
-      model <- loglin(counts, cliques, fit = T, print = F)
-      score <- score.f(model)
-      return(list(fitted = model, score = score, cliques = cliques, graph = g))
-    }
+      M <- loglin(counts, cliques, fit = T, print = F)
+      score <- score.f(M)
+      return(list(score = score, cliques = cliques, graph = g))
   }
 
   repeat{
@@ -70,7 +68,7 @@ gm.search <- function(counts, graph.init, forward, backward, score) {
     added <- if (forward) all.neighbors$added else list()
     removed <- if (backward) all.neighbors$removed else list()
     neighbors <- c(added, removed)
-    fitted.models <- lapply(neighbors, trainAndScore(counts))
+    fitted.models <- lapply(neighbors, trainAndScore)
     current.model <- best.model(fitted.models)
 
     if(current.model$score >= model$score) # local optimum
