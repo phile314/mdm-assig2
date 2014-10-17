@@ -4,6 +4,9 @@
 \usepackage{multirow}
 \usepackage{subcaption}
 \usepackage{enumerate}
+
+\newcommand\ci{\perp\!\!\!\perp}
+
 % \usepackage{pdflscape}
 
 % font size could be 10pt (default), 11pt or 12 pt
@@ -89,9 +92,11 @@ The nodes have been numbered according to the following table:
 rhc.graphmod.c <- answer.c()
 @
 
+% TODO maybe better table?
 <<table-c,results='asis',cache=FALSE,echo=FALSE>>=
 tbl <- xtable(clique.table(rhc.graphmod.c), 
-              caption = "The cliques of the resulting model for question (c)")
+              caption = "The cliques of the resulting model for question (c)",
+              align = "cc")
 print(tbl)
 @
 
@@ -104,8 +109,19 @@ plot.igraph(g.6, layout = layout.circle(g.6))
 \end{figure}
 
 
-D: ([MV])
-what is pairwise?
+\item 
+The Pairwaise Markov property states that any two non-adjacent variables are conditionally
+independent given all the others.
+Since variable node 4 (variable \emph{gender}) and node 7 (variable \emph{income}) 
+are not adjacent (the edge $(4,7)$ is not present in the graph), we can conclude that:
+\[ X_4 \ci X_7 | (X_1, X_2, X_3, X_5, X_6, X_7, X_8, X_9, X_{10})\] 
+
+Using the Global Markov property we can derive a stronger statement.
+Node 4 is separated from node 7 by node 6, because any path from 4 to 7 passes
+through node 6, therefore \emph{gender} is independent from \emph{income} given
+\emph{ninsclas} (7).
+
+\[ X_4 \ci X_7 | X_6 \]
 
 E: [MV]
 
