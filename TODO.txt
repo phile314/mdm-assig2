@@ -1,3 +1,6 @@
 until Thursday
 
 see doc.Rnw
+
+The find.cliques function seems to return duplicates cliques.
+

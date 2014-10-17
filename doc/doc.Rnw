@@ -3,6 +3,7 @@
 \usepackage{amsmath}
 \usepackage{multirow}
 \usepackage{subcaption}
+\usepackage{enumerate}
 % \usepackage{pdflscape}
 
 % font size could be 10pt (default), 11pt or 12 pt
@@ -34,9 +35,10 @@
 \begin{document}
 
 <<setup, echo=FALSE, cache=FALSE,include=FALSE>>=
-#source('../src/benchmark.r', chdir=TRUE)
+source('../src/analysis.r', chdir=TRUE)
 library(knitr)
-#library(xtable)
+library(xtable)
+library(igraph)
 @
 
 \maketitle
@@ -51,17 +53,56 @@ and their performance implications.
 
 \section{Analysis}
 
+
+\begin{enumerate}[(a)]
+
+\item
 A: [PH]
 n = 10
 k = 2
 n over k = ...
 
-B: [PH]
+\item B: [PH]
 cells = length(table(...))
-num_params_sat = cells - 1 (VERIFY)
+num\_params\_sat = cells - 1 (VERIFY)
 
-C: [MV]
-gm.search(table(dat), matrix(0, 10, 10), forward=TRUE, backward=TRUE, score="bic")
+\item
+The nodes have been numbered according to the following table:
+\begin{center}
+ \begin{tabular}{ | c | c | }
+    \hline
+    N & variable \\ \hline
+    1 & cat1 \\ \hline
+    2 & death \\ \hline
+    3 & swang1 \\  \hline
+    4 & gender \\ \hline
+    5 & race \\ \hline
+    6 & ninsclas \\ \hline
+    7 & income \\ \hline
+    8 & ca \\ \hline
+    9 & age \\ \hline
+    10 & meanbp1 \\ \hline
+  \end{tabular}
+\end{center}
+
+<<answer-c,cache=TRUE,echo=FALSE>>=
+rhc.graphmod.c <- answer.c()
+@
+
+<<table-c,results='asis',cache=FALSE,echo=FALSE>>=
+tbl <- xtable(clique.table(rhc.graphmod.c), 
+              caption = "The cliques of the resulting model for question (c)")
+print(tbl)
+@
+
+\begin{figure}
+<<graph-c,fig.keep='high',cache=FALSE,echo=FALSE>>=
+g.6 <- from.cliques(rhc.graphmod.c$cliques)
+plot.igraph(g.6, layout = layout.circle(g.6))
+@
+\caption{The independence graph for question (c)}
+\end{figure}
+
 
 D: ([MV])
 what is pairwise?
@@ -73,6 +114,8 @@ F: [PH]
 G: ([PH])
 
 H: [PH]
+
+\end{enumerate}
 
 \begin{thebibliography}{1}
 
