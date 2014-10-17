@@ -123,7 +123,12 @@ through node 6, therefore \emph{gender} is independent from \emph{income} given
 
 \[ X_4 \ci X_7 | X_6 \]
 
-E: [MV]
+By the Local Markov property a variable, given its closed neighbourhood, its independent
+from all remaining vertices. Therefore, in order to estimate the 
+variable \emph{death} (2) (which determines whether someone survives), it is sufficient to
+consider its adjacents variables: \emph{ca} (8), \emph{age} (9), \emph{meanbp1} (10).
+
+\item [MV]
 
 F: [PH]
 
