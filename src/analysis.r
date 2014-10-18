@@ -11,9 +11,6 @@ clique.table <- function(graphmodel){
   return(clique.df)
 }
 
-answer.c <- function() gm.search(table(rhc.dat), matrix(0, 10, 10), forward=TRUE,
-                                 backward=TRUE, score="bic")
-
 # Returns an igraph object from the list of its cliques
 from.cliques <- function(cliques){
   mkFullGraph <- function(clique){
@@ -24,3 +21,9 @@ from.cliques <- function(cliques){
   graphs <- lapply(cliques, mkFullGraph)
   return(graph.union(graphs))
 }
+
+answer.c <- function() gm.search(table(rhc.dat), matrix(0, 10, 10), forward=TRUE,
+                                 backward=TRUE, score="bic")
+
+answer.e <- function() gm.search(table(rhc.dat), matrix(1, 10, 10) - diag(1, 10),
+                                 forward=TRUE, backward=TRUE, score="bic")
