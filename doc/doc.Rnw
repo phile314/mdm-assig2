@@ -233,12 +233,21 @@ rhc.h <- search.params()
 etab <- eval_to_df(rhc.h)
 #ctab <- with(etab, tapply(error, list(nmin, minLeaf), sum))
 #digits <- c(0, rep(3, dim(ctab)[2]))
-tab <- xtable(etab, caption = "TODO", label = "tbl:ans-h")
+tab <- xtable(etab, caption = "Result of training models with different parameters for question (h). TODO", label = "tbl:ans-h")
 print(tab)
 @
+We have searched for better models using the \texttt{restart} approach with different parameters.
+For each parameter combination we performed 20 restarts, and both backward and forward search
+was always enabled. The complete results can be seen in table \ref{tbl:ans-h}.
 
-restarts: 20
-forward + backward
+For the AIC scoring function, the restarting approach yields a minimally better result with a
+AIC score of $14263$ for values of \texttt{prob} of $\{25\%, 50\%, 75\%\}$. The difference in AIC score
+between these three values of \texttt{prob} is minimal and may well be just random noise.
+
+For the BIC scoring function, the found models for \texttt{prob} values of
+$\{25\%, 50\%\}$ have a score of $15783$. This is a minor improvement over the earlier models,
+which had a best score of $15841$. 
+
 
 \end{enumerate}
 
