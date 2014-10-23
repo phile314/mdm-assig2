@@ -136,7 +136,7 @@ are not adjacent (the edge $(4,7)$ is not present in the graph), we can conclude
 Using the Global Markov property we can derive a stronger statement.
 Node 4 is separated from node 7 by node 6, because any path from 4 to 7 passes
 through node 6, therefore \emph{gender} is independent from \emph{income} given
-\emph{ninsclas} (7).
+\emph{ninsclas} (6).
 
 \[ X_4 \ci X_7 | X_6 \]
 
