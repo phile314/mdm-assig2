@@ -191,7 +191,30 @@ plot.igraph(g.e, layout = layout.circle(g.e))
 
 %F
 \item
-F: [PH]
+<<answer-f,cache=TRUE,echo=FALSE>>=
+rhc.graphmod.f <- answer.f()
+@
+<<table-f-compl,results='asis',cache=FALSE,echo=FALSE>>=
+tbl <- xtable(clique.table(rhc.graphmod.f$complete),
+            caption = "The cliques of the resulting model for question (f), starting from the complete graph.",
+            align = "cc")
+print(tbl)
+@
+<<table-f-empty,results='asis',cache=FALSE,echo=FALSE>>=
+tbl <- xtable(clique.table(rhc.graphmod.f$empty),
+            caption = "The cliques of the resulting model for question (f), starting from the empty graph.",
+            align = "cc")
+print(tbl)
+@
+<<answer-f-scores,cache=FALSE,results='asis'>>=
+print(rhc.graphmod.f$complete$score)
+print(rhc.graphmod.f$empty$score)
+@
+
+empty-score: 14278.21
+complete-score: 45560.05 (trace also shows that no edges were added/removed)
+
+cliques and score
 
 %G
 \item
@@ -199,7 +222,20 @@ G: ([PH])
 
 %H
 \item
-H: [PH]
+
+<<answer-h,cache=TRUE,echo=FALSE>>=
+rhc.h <- search.params()
+@
+<<answer-h-tbl,cache=FALSE,results='asis',echo=FALSE>>=
+etab <- eval_to_df(rhc.h)
+#ctab <- with(etab, tapply(error, list(nmin, minLeaf), sum))
+#digits <- c(0, rep(3, dim(ctab)[2]))
+tab <- xtable(etab, caption = "TODO", label = "tbl:ans-h")
+print(tab)
+@
+
+restarts: 20
+forward + backward
 
 \end{enumerate}
 
