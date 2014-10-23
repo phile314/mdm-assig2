@@ -64,11 +64,11 @@ search.params <- function(){
 eval_to_df <- function(eres) {
   N <- length(eres$all)
   df <- data.frame(   scorefunction = rep(NA, N),
-                      probability = rep(NA, N),
+                      prob = rep(NA, N),
                       score = rep(NA, N))
   for(i in 1:(length(eres$all))) {
     pr <- eres$params[[i]]
-    df[i, ] <- c(pr$score, pr$prob, eres$all[[i]]$model$score)
+    df[i, ] <- c(pr$score, pr$prob, eres$all[[i]]$model$model$best$score)
   }
   return(df)
 }

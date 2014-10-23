@@ -84,7 +84,9 @@ have to sum up to $1$. Therefore there are $155519$ parameters.
 
 %C
 \item
-The nodes have been numbered according to the following table:
+The nodes have been numbered according to table \ref{tbl:ans-c-nodes}. The cliques of the
+resulting model can be seen in table \ref{tbl:ans-c-cliq}. Figure \ref{grp:ans-c-graph} shows
+the independence graph of the model.
 
 \begin{table}
   \begin{center}
@@ -103,6 +105,7 @@ The nodes have been numbered according to the following table:
       10 & meanbp1 \\ \hline
     \end{tabular}
     \caption{Numbering used to identify the variables of the model}
+    \label{tbl:ans-c-nodes}
   \end{center}
 \end{table}
 
@@ -114,7 +117,8 @@ rhc.graphmod.c <- answer.c()
 <<table-c,results='asis',cache=FALSE,echo=FALSE>>=
 tbl <- xtable(clique.table(rhc.graphmod.c), 
               caption = "The cliques of the resulting model for question (c)",
-              align = "cc")
+              align = "cc",
+              label = "tbl:ans-c-cliq")
 print(tbl)
 @
 
@@ -124,6 +128,7 @@ g.c <- from.cliques(rhc.graphmod.c$cliques)
 plot.igraph(g.c, layout = layout.circle(g.c))
 @
 \caption{The independence graph for question (c)}
+\label{grp:ans-c-graph}
 \end{figure}
 
 
@@ -199,24 +204,25 @@ rhc.graphmod.f <- answer.f()
 <<table-f-compl,results='asis',cache=FALSE,echo=FALSE>>=
 tbl <- xtable(clique.table(rhc.graphmod.f$complete),
             caption = "The cliques of the resulting model for question (f), starting from the complete graph.",
-            align = "cc")
+            align = "cc",
+            label = "tbl:ans-f-compl")
 print(tbl)
 @
 <<table-f-empty,results='asis',cache=FALSE,echo=FALSE>>=
 tbl <- xtable(clique.table(rhc.graphmod.f$empty),
             caption = "The cliques of the resulting model for question (f), starting from the empty graph.",
-            align = "cc")
+            align = "cc",
+            label = "tbl:ans-f-empty")
 print(tbl)
 @
-<<answer-f-scores,cache=FALSE,results='asis'>>=
+<<answer-f-scores,cache=FALSE,echo=FALSE,include=FALSE>>=
 print(rhc.graphmod.f$complete$score)
-print(rhc.graphmod.f$empty$score)
 @
+The scores of the models starting from the complete and empty graphs are equal and are $14278$.
+In addition, both models have the same cliques as can be seen in table \ref{tbl:ans-f-compl} and \ref{tbl:ans-f-empty},
+and therefore also the same graph.
+This indicates that the same local optima is found from both starting points.
 
-empty-score: 14278.21
-complete-score: 45560.05 (trace also shows that no edges were added/removed)
-
-cliques and score
 
 \item
 The models computed using BIC score are simpler than those found using AIC.
@@ -244,12 +250,21 @@ rhc.h <- search.params()
 etab <- eval_to_df(rhc.h)
 #ctab <- with(etab, tapply(error, list(nmin, minLeaf), sum))
 #digits <- c(0, rep(3, dim(ctab)[2]))
-tab <- xtable(etab, caption = "TODO", label = "tbl:ans-h")
+tab <- xtable(etab, caption = "Result of training models with different parameters for question (h).", label = "tbl:ans-h")
 print(tab)
 @
+We have searched for better models using the \texttt{restart} approach with different parameters.
+For each parameter combination we performed 20 restarts, and both backward and forward search
+was always enabled. The complete results can be seen in table \ref{tbl:ans-h}.
 
-restarts: 20
-forward + backward
+For the AIC scoring function, the restarting approach yields a minimally better result with a
+AIC score of $14263$ for values of \texttt{prob} of $\{25\%, 50\%, 75\%\}$. The difference in AIC score
+between these three values of \texttt{prob} is minimal and may well be just random noise.
+
+For the BIC scoring function, the found models for \texttt{prob} values of
+$\{25\%, 50\%\}$ have a score of $15783$. This is a minor improvement over the earlier models,
+which had a best score of $15841$. 
+
 
 \end{enumerate}
 
