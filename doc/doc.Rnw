@@ -84,7 +84,9 @@ have to sum up to $1$. Therefore there are $155519$ parameters.
 
 %C
 \item
-The nodes have been numbered according to the following table:
+The nodes have been numbered according to table \ref{tbl:ans-c-nodes}. The cliques of the
+resulting model can be seen in table \ref{tbl:ans-c-cliq}. Figure \ref{grp:ans-c-graph} shows
+the independence graph of the model.
 
 \begin{table}
   \begin{center}
@@ -103,6 +105,7 @@ The nodes have been numbered according to the following table:
       10 & meanbp1 \\ \hline
     \end{tabular}
     \caption{Numbering used to identify the variables of the model}
+    \label{tbl:ans-c-nodes}
   \end{center}
 \end{table}
 
@@ -114,7 +117,8 @@ rhc.graphmod.c <- answer.c()
 <<table-c,results='asis',cache=FALSE,echo=FALSE>>=
 tbl <- xtable(clique.table(rhc.graphmod.c), 
               caption = "The cliques of the resulting model for question (c)",
-              align = "cc")
+              align = "cc",
+              label = "tbl:ans-c-cliq")
 print(tbl)
 @
 
@@ -124,6 +128,7 @@ g.c <- from.cliques(rhc.graphmod.c$cliques)
 plot.igraph(g.c, layout = layout.circle(g.c))
 @
 \caption{The independence graph for question (c)}
+\label{grp:ans-c-graph}
 \end{figure}
 
 
