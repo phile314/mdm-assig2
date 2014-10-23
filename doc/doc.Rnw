@@ -66,19 +66,21 @@ and their performance implications.
 \item
 The graph contains $10$ nodes, and there may or may not be an edge
 between every node combination. The number of different graphical models
-is therefore equal to ${10 \choose 2}$, which gives a value of $45$.
+is therefore equal to $2^{10 \choose 2}$, which gives a value of $3.518437e+13$.
 
-% R code: choose(10,2)
+% R code: 2^choose(10,2)
 
 %B
 \item
 % http://www.cs.uu.nl/docs/vakken/mdm/Slides/dm-graphmod-1.pdf, slide 7
-Parameters: $9 * 2^3 * 3 * 6 * 4 * 3 * 5 * 2$ which is $155520$ (or $155519$, as the probablities have to sum up to $1$)
+The number of cells of the counts table can be computed by multiplying the number
+of categories for each attribute together. This gives the expression
+$9 * 2^3 * 3 * 6 * 4 * 3 * 5 * 2$, which is equal to $155520$.
 
-length(table(d)): 155520
+The number of parameters is the number of parameters minus 1, as all probablities
+have to sum up to $1$. Therefore there are $155519$ parameters.
 
-cells = length(table(...))
-num\_params\_sat = cells - 1 (VERIFY)
+% length(table(d)): 155520
 
 %C
 \item
