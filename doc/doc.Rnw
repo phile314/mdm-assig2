@@ -238,7 +238,7 @@ rhc.h <- search.params()
 etab <- eval_to_df(rhc.h)
 #ctab <- with(etab, tapply(error, list(nmin, minLeaf), sum))
 #digits <- c(0, rep(3, dim(ctab)[2]))
-tab <- xtable(etab, caption = "Result of training models with different parameters for question (h). TODO", label = "tbl:ans-h")
+tab <- xtable(etab, caption = "Result of training models with different parameters for question (h).", label = "tbl:ans-h")
 print(tab)
 @
 We have searched for better models using the \texttt{restart} approach with different parameters.
