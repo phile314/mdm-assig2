@@ -199,24 +199,25 @@ rhc.graphmod.f <- answer.f()
 <<table-f-compl,results='asis',cache=FALSE,echo=FALSE>>=
 tbl <- xtable(clique.table(rhc.graphmod.f$complete),
             caption = "The cliques of the resulting model for question (f), starting from the complete graph.",
-            align = "cc")
+            align = "cc",
+            label = "tbl:ans-f-compl")
 print(tbl)
 @
 <<table-f-empty,results='asis',cache=FALSE,echo=FALSE>>=
 tbl <- xtable(clique.table(rhc.graphmod.f$empty),
             caption = "The cliques of the resulting model for question (f), starting from the empty graph.",
-            align = "cc")
+            align = "cc",
+            label = "tbl:ans-f-empty")
 print(tbl)
 @
-<<answer-f-scores,cache=FALSE,results='asis'>>=
+<<answer-f-scores,cache=FALSE,echo=FALSE,include=FALSE>>=
 print(rhc.graphmod.f$complete$score)
-print(rhc.graphmod.f$empty$score)
 @
+The scores of the models starting from the complete and empty graphs are equal and are $14278$.
+In addition, both models have the same cliques as can be seen in table \ref{tbl:ans-f-compl} and \ref{tbl:ans-f-empty},
+and therefore also the same graph.
+This indicates that the same local optima is found from both starting points.
 
-empty-score: 14278.21
-complete-score: 45560.05 (trace also shows that no edges were added/removed)
-
-cliques and score
 
 %G
 \item
