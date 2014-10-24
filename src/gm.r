@@ -16,7 +16,7 @@ source("cliques.r")
 gm.restart <- function(nstart, prob, seed, counts, forward, backward, score) {
   set.seed(seed)
   best <- NULL
-  for (i in (1:nstart)) {
+  for (i in seq_len(nstart)) {
     # generate random graph
     gr <- gm.randGraph(prob, length(dim(counts)))
 
@@ -173,25 +173,14 @@ output.trace <- function(trace){
 #
 # Arguments
 #   prob   : Probablity that an edge is created.
-#   nNodes : The number of nodes in the graph.
+#   n : The number of nodes in the graph.
 #
 # Result
 # The adjacency matrix.
-gm.randGraph <- function(prob, nNodes) {
-  m <- matrix(0,nNodes,nNodes)
-  # TODO update graph
-  # TODO explain why we are setting the diagonal to zero
-  # (probably because it would mean that a node is independent
-  #  from itself, which doesn't sound sensible)
-  for (i in (1:nNodes)) {
-    s <- sample((0:1), (i - 1), prob = c(1 - prob, prob), replace = TRUE)
-    # fill lower half, set everything else to zero
-    m[i,] <- c(s,rep(0, nNodes - i + 1))
-    # fill upper half
-    if (i > 1) {
-      m[(1:(i-1)),i] <- s
-    }
-  }
-
+gm.randGraph <- function(prob, n) {
+  m <- matrix(0, n, n)
+  for(i in seq_len(n))
+    for(j in seq_len(i - 1))
+      m[i, j] <- m[j , i] <- sample(c(0:1), 1, prob = c(1 - prob, prob))
   return(m)
 }
