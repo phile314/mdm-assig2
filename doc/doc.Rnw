@@ -74,21 +74,60 @@ The first node of an edge can be chosen among $k$ elements, the second node amon
 the remaining $k - 1$ (we do not allow self loops), finally we divide by 2 
 because the edges are undirected, thus an edge and the edge obtained swapping the
 vertices count as one.
-The graph contains $10$ nodes, and there may or may not be an edge
-between every node combination. The number of different graphical models
-is therefore equal to $2^{10 \choose 2}$, which gives a value of $3.518437e+13$.
+The number of different graphs with $k$ nodes corresponds to the total number 
+of subsets of the set of all possible edges. A set with $n$ elements has $2^n$ 
+subsets, because each element can be included or not in any subset.
+Therefore the number of graphical models for a model with $k$ variables is $2^{k \choice 2}$.
+This data set contains $10$ nodes, therefore the number of different 
+graphical models is:
+\[2^{10 \choose 2}$ = 35184372088832 \]
 
 % R code: 2^choose(10,2)
 
 %B
 \item
 % http://www.cs.uu.nl/docs/vakken/mdm/Slides/dm-graphmod-1.pdf, slide 7
-The number of cells of the counts table can be computed by multiplying the number
-of categories for each attribute together. This gives the expression
-$9 * 2^3 * 3 * 6 * 4 * 3 * 5 * 2$, which is equal to $155520$.
+Each cell of the table of counts contains the number of rows in a the data set 
+whose attributes have a certain combination of values.
+Therefore the number of cells of a table of counts correspond to the total 
+number of possible configurations of the attributes values, which is the
+product of the number of possible values of each attribute.
+We report in table \ref{tbl:ans-a-values}, the variables of the model, with the number
+of its possible values.
 
-The number of parameters is the number of parameters minus 1, as all probablities
-have to sum up to $1$. Therefore there are $155519$ parameters.
+\begin{table}
+  \begin{center}
+    \begin{tabular}{ | c | c | }
+      \hline
+      variable & # values \\ \hline
+      cat1 & 9 \\ \hline
+      death & 2 \\ \hline
+      swang1 & 2 \\  \hline
+      gender & 2 \\ \hline
+      race & 3 \\ \hline
+      ninsclas & 6 \\ \hline
+      income & 4 \\ \hline
+      ca & 3 \\ \hline
+      age & 5 \\ \hline
+      meanbp1 & 2 \\ \hline
+    \end{tabular}
+    \caption{Number of levels for each variable of the model}
+    \label{tbl:ans-a-values}
+  \end{center}
+\end{table}
+
+Therefore the number of cells of the table of counts for this data set is given by
+$9 \times 2^3 \times 3 \times 6 \times 4 \times 3 \times 5 \times 2$, which is equal to $155520$.
+
+The saturated model does not assume any (conditional) independency among the variables,
+thus all its probabilities are estimated counting how many times a certain combination of values
+occurs, divided by the total number of observation:
+\[ \hat{p}(x_1 \dots x_n) = \frac{n(x_1 \dots x_n)}{N}\]
+Therefore we need to consider again all the possible configurations of values. However
+since all the probabilities must sum to one, we can leave out one of those. 
+
+The number of parameters of the saturated models is the number of cells of the table
+of counts minus 1: $155519$ parameters.
 
 % length(table(d)): 155520
 
