@@ -62,8 +62,18 @@ and their performance implications.
 
 \begin{enumerate}[(a)]
 
-%A
 \item
+A graphical model is totally represented by its independence graph, because all
+the constraints (u-terms set to 0) can be read from it.
+Therefore counting the number of graphical models comes down to counting the 
+number of its independence graph, which are undirected graphs with as many
+nodes as variables in the model.
+In a graph with $k$ nodes, there are $k \choose 2$ possible undirected edges:
+\[ k \choose 2 = \frac{k!}{2! (k - 2)!} = \frac{k(k -1)}{2} \]
+The first node of an edge can be chosen among $k$ elements, the second node among
+the remaining $k - 1$ (we do not allow self loops), finally we divide by 2 
+because the edges are undirected, thus an edge and the edge obtained swapping the
+vertices count as one.
 The graph contains $10$ nodes, and there may or may not be an edge
 between every node combination. The number of different graphical models
 is therefore equal to $2^{10 \choose 2}$, which gives a value of $3.518437e+13$.
