@@ -69,7 +69,7 @@ Therefore counting the number of graphical models comes down to counting the
 number of its independence graph, which are undirected graphs with as many
 nodes as variables in the model.
 In a graph with $k$ nodes, there are $k \choose 2$ possible undirected edges:
-\[ k \choose 2 = \frac{k!}{2! (k - 2)!} = \frac{k(k -1)}{2} \]
+\[ {k \choose 2} = \frac{k!}{2! (k - 2)!} = \frac{k(k -1)}{2} \]
 The first node of an edge can be chosen among $k$ elements, the second node among
 the remaining $k - 1$ (we do not allow self loops), finally we divide by 2 
 because the edges are undirected, thus an edge and the edge obtained swapping the
@@ -77,10 +77,10 @@ vertices count as one.
 The number of different graphs with $k$ nodes corresponds to the total number 
 of subsets of the set of all possible edges. A set with $n$ elements has $2^n$ 
 subsets, because each element can be included or not in any subset.
-Therefore the number of graphical models for a model with $k$ variables is $2^{k \choice 2}$.
+Therefore the number of graphical models for a model with $k$ variables is $2^{k \choose 2}$.
 This data set contains $10$ nodes, therefore the number of different 
 graphical models is:
-\[2^{10 \choose 2}$ = 35184372088832 \]
+\[2^{10 \choose 2} = 35184372088832 \]
 
 % R code: 2^choose(10,2)
 
@@ -99,7 +99,7 @@ of its possible values.
   \begin{center}
     \begin{tabular}{ | c | c | }
       \hline
-      variable & # values \\ \hline
+      variable & \# values \\ \hline
       cat1 & 9 \\ \hline
       death & 2 \\ \hline
       swang1 & 2 \\  \hline
@@ -127,7 +127,7 @@ Therefore we need to consider again all the possible configurations of values. H
 since all the probabilities must sum to one, we can leave out one of those. 
 
 The number of parameters of the saturated models is the number of cells of the table
-of counts minus 1: $155519$ parameters.
+of counts minus 1, which gives $155519$ parameters.
 
 % length(table(d)): 155520
 
