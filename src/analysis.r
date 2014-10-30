@@ -3,6 +3,10 @@ source("gm.r")
 
 rhc.dat <- read.csv('../data/rhc-small.txt')
 
+# Function: clique.table
+#
+# Result
+#   The cliques of the graph model as table.
 clique.table <- function(graphmodel){
   fmt <- function(set) paste0("{", paste(lapply(set, paste), collapse=", "), "}")
   cliques <- unique(lapply(graphmodel$cliques, sort))
@@ -12,6 +16,11 @@ clique.table <- function(graphmodel){
   return(clique.df)
 }
 
+# Function: from.cliques
+#
+# Result
+#   The igraph object.
+#
 # Returns an igraph object from the list of its cliques
 from.cliques <- function(cliques){
   mkFullGraph <- function(clique){
@@ -23,12 +32,24 @@ from.cliques <- function(cliques){
   return(graph.union(graphs))
 }
 
+# Function: answer.c
+#
+# Result
+#   The result for question c.
 answer.c <- function() gm.search(table(rhc.dat), matrix(0, 10, 10), forward=TRUE,
                                  backward=TRUE, score="bic")
 
+# Function: answer.e
+#
+# Result
+#   The result for question e.
 answer.e <- function() gm.search(table(rhc.dat), matrix(1, 10, 10) - diag(1, 10),
                                  forward=TRUE, backward=TRUE, score="bic")
 
+# Function: answer.f
+#
+# Result
+#   The result for question f.
 answer.f <- function() {
   return(list(complete = gm.search(table(rhc.dat), matrix(1, 10, 10) - diag(1, 10), forward=TRUE,
                                 backward=TRUE, score="aic")
@@ -36,7 +57,10 @@ answer.f <- function() {
                                 backward=TRUE, score="aic")))
 }
 
-# Computes the error rate for a number of combinations of nmin and minleaf parameters
+# Function: search.params
+#
+# Result
+#   The scores for different prob/scoring algorithm combinations.
 search.params <- function(){
   ps_probs <- seq(0,1,0.25)
   ps_scores <- c("aic", "bic")
@@ -102,8 +126,6 @@ eval_mthd <- function(data, lbls, vals, r) {
 # A list of
 #   model : the fitted model.
 #   score : the score of the fitted model.
-#
-# Evaluates the tree classification algorithm.
 eval_with_pars <- function(data, par) {
   # just use the aic/bic score as result. We don't compare AIC with BIC models, so that is okay to do.
   model <- gm.restart(20, par$prob, 0, data, forward=TRUE, backward=TRUE, par$score)
