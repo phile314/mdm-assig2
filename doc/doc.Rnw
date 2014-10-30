@@ -53,9 +53,8 @@ options(warn=-1)
 
 
 \section{Problem description}
-The goal of this assignment is to implement and evaluate a tree classification algorithm.
-In addition to that, we will also discuss two different implementation styles
-and their performance implications.
+The goal of this assignment is to implement a hill-climbing algorithm to
+find graphical models, and to study it's behaviour with different parameters.
 
 \section{Analysis}
 
@@ -66,7 +65,7 @@ and their performance implications.
 A graphical model is totally represented by its independence graph, because all
 the constraints (u-terms set to 0) can be read from it.
 Therefore counting the number of graphical models comes down to counting the 
-number of its independence graph, which are undirected graphs with as many
+number of possible independence graphs, which are undirected graphs with as many
 nodes as variables in the model.
 In a graph with $k$ nodes, there are $k \choose 2$ possible undirected edges:
 \[ {k \choose 2} = \frac{k!}{2! (k - 2)!} = \frac{k(k -1)}{2} \]
@@ -93,7 +92,7 @@ Therefore the number of cells of a table of counts correspond to the total
 number of possible configurations of the attributes values, which is the
 product of the number of possible values of each attribute.
 We report in table \ref{tbl:ans-a-values}, the variables of the model, with the number
-of its possible values.
+of possible values for each attribute.
 
 \begin{table}
   \begin{center}
@@ -282,12 +281,11 @@ used for the $dim(M)$ component.
 This factor represents the number of non-zero u-terms and determines the complexity of the model.
 For a model $M$, a small $dim(M)$ means that many u-terms are set to zero, resulting in
 a independence graph will smaller cliques.
-For AIC the wheight used is the constant 2, whereas for BIC it is $ln(N)$ where $N$ is the number of 
+For AIC the wheight used is the constant 2, whereas for BIC it is $ln(N)$, where $N$ is the number of 
 observations in the data set. The data set used in this assignment contains 
 5735 rows, thus $log(5735) \approx 8.654343 > 2$.
-Using the BIC score the hill-climbing algorithm compensates the worse scores, due to
-this greater weight producing simpler models, i.e. models with fewer non-zero u-terms
-(smaller $dim(M)$, which result in smaller cliques.
+Using the BIC score the hill-climbing algorithm converges to simpler models due to the larger penalty term,
+i.e. models with fewer non-zero u-terms (smaller $dim(M)$), which result in smaller cliques.
 
 %H
 \item
