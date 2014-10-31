@@ -281,12 +281,14 @@ used for the $dim(M)$ component.
 This factor represents the number of non-zero u-terms and determines the complexity of the model.
 For a model $M$, a small $dim(M)$ means that many u-terms are set to zero, resulting in
 a independence graph will smaller cliques. For instance the independence model, in which 
-all the interaction u-terms are set to 0, contains only 1-node cliques, each for every variable
-of the node. Conversely, the opposite extreme is the saturated model, in which no u-terms is omitted,
-that have one maximal cliques, containing all the variables of the model.
+all the interaction u-terms are set to 0, contains only 1-node cliques, one for every variable
+of the model. Conversely, the opposite extreme is the saturated model, in which no u-terms are omitted,
+giving one maximal clique containing all the variables of the model.
+
 For AIC the wheight used is the constant 2, whereas for BIC it is $ln(N)$, where $N$ is the number of 
 observations in the data set. The data set used in this assignment contains 
 5735 rows, thus $log(5735) \approx 8.654343 > 2$.
+
 Using the BIC score the hill-climbing algorithm converges to simpler models due to the larger penalty term,
 i.e. models with fewer non-zero u-terms (smaller $dim(M)$), which result in smaller cliques.
 
