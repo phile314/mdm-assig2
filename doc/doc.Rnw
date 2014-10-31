@@ -54,7 +54,7 @@ options(warn=-1)
 
 \section{Problem description}
 The goal of this assignment is to implement a hill-climbing algorithm to
-find graphical models, and to study it's behaviour with different parameters.
+learn graphical models from data and to study its behaviour with different parameters.
 
 \section{Analysis}
 
@@ -280,7 +280,10 @@ The reason lies in the difference between BIC and AIC score, namely the weight
 used for the $dim(M)$ component.
 This factor represents the number of non-zero u-terms and determines the complexity of the model.
 For a model $M$, a small $dim(M)$ means that many u-terms are set to zero, resulting in
-a independence graph will smaller cliques.
+a independence graph will smaller cliques. For instance the independence model, in which 
+all the interaction u-terms are set to 0, contains only 1-node cliques, each for every variable
+of the node. Conversely, the opposite extreme is the saturated model, in which no u-terms is omitted,
+that have one maximal cliques, containing all the variables of the model.
 For AIC the wheight used is the constant 2, whereas for BIC it is $ln(N)$, where $N$ is the number of 
 observations in the data set. The data set used in this assignment contains 
 5735 rows, thus $log(5735) \approx 8.654343 > 2$.
