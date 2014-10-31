@@ -1,3 +1,5 @@
+# find.cliques(R, P, X, graph, cliques)
+# Finds the cliques of a graph using Bron–Kerbosch algorithm with pivoting
 find.cliques <- function (R, P, X, graph, cliques) {
   if (length(P)==0 & length(X)==0)
     cliques <- list(R)

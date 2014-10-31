@@ -43,7 +43,7 @@ gm.restart <- function(nstart, prob, seed, counts, forward, backward, score) {
 #
 # Result
 # A list containing the following named components:
-#   model : A list containing the cliques of the final model. Each clique is a
+#   cliques : A list containing the cliques of the final model. Each clique is a
 #           vector containing the column numbers of the variables in the clique.
 #   score : The AIC or BIC score of the final model.
 #   trace : A data frame providing a trace of the search process. Row i of the data
@@ -86,7 +86,7 @@ gm.search <- function(counts, graph.init, forward, backward, score) {
     model <- current.model
   }
 
-  return(list(cliques = model$cliques,  # TODO should the name be model or cliques?
+  return(list(cliques = model$cliques,
               score = model$score,
               trace = trace,
               call  = match.call()))
@@ -159,14 +159,6 @@ graph.neighbors <- function(graph){
   return(list(added = added, removed = removed))
 }
 
-# Prints the trace of a search execition
-output.trace <- function(trace){
-  fmt <- function(row)
-    paste(row$action, paste(row$v1 , "-", row$v2), "score =", row$score, sep = "\t")
-  formatted <- by(trace, seq_len(nrow(trace)), fmt)
-  cat(formatted, sep = "\n")
-}
-
 # gm.randGraph(prob, nNodes)
 # Generates a random graph represented as adjacency matrix.
 # No edges from a vertex back to itself are created.
@@ -183,4 +175,20 @@ gm.randGraph <- function(prob, n) {
     for(j in seq_len(i - 1))
       m[i, j] <- m[j , i] <- sample(c(0:1), 1, prob = c(1 - prob, prob))
   return(m)
+}
+
+# output.trace(trace)
+# Prints the trace of a search execution in a nicely formatted fashion
+#
+# Arguments
+#   trace : A trace data frame produced by gm.search
+#
+# Result
+#   None
+#
+output.trace <- function(trace){
+  fmt <- function(row)
+    paste(row$action, paste(row$v1 , "-", row$v2), "score =", row$score, sep = "\t")
+  formatted <- by(trace, seq_len(nrow(trace)), fmt)
+  cat(formatted, sep = "\n")
 }
